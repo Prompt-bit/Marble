@@ -1,0 +1,313 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  background: #0c0c0c;
+  color: #f5f5f5;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* MAIN */
+
+.app,
+.auth {
+  width: min(100%, 520px);
+  min-height: 100vh;
+
+  margin: auto;
+
+  padding: max(26px, env(safe-area-inset-top)) 22px
+    max(100px, env(safe-area-inset-bottom));
+}
+
+/* HEADER */
+
+header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 42px;
+}
+
+.brand {
+  font-size: 34px;
+  font-weight: 750;
+  letter-spacing: -2px;
+
+  line-height: 1;
+}
+
+.marbleName {
+  color: #777;
+
+  margin-top: 8px;
+
+  font-size: 13px;
+}
+
+/* BUTTONS */
+
+.roundButton,
+.fab {
+  border: 0;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  color: #111;
+  background: #f3f3f3;
+
+  cursor: pointer;
+
+  transition:
+    transform 120ms ease,
+    background 120ms ease;
+}
+
+.roundButton {
+  width: 46px;
+  height: 46px;
+
+  font-size: 22px;
+}
+
+.roundButton.small {
+  width: 40px;
+  height: 40px;
+}
+
+.roundButton.secondary {
+  background: #1b1b1b;
+  color: #ddd;
+}
+
+.roundButton:active,
+.fab:active {
+  transform: scale(0.91);
+}
+
+iconify-icon {
+  font-size: 23px;
+}
+
+/* TASKS */
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+}
+
+.task {
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.check {
+  width: 27px;
+  height: 27px;
+  padding: 0;
+
+  border: 2px solid #4a4a4a;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  color: #111;
+}
+
+.check iconify-icon {
+  width: 16px;
+  height: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  line-height: 1;
+}
+
+.check.completed {
+  background: #f3f3f3;
+  border-color: #f3f3f3;
+}
+
+.check.completed iconify-icon {
+  opacity: 1;
+}
+
+.taskText {
+  flex: 1;
+
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.taskText.completed {
+  opacity: 0.35;
+  text-decoration: line-through;
+}
+
+.delete {
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: transparent;
+  color: #666;
+
+  cursor: pointer;
+}
+
+.delete:active {
+  background: #191919;
+}
+
+/* ADD BUTTON */
+
+.fab {
+  position: fixed;
+
+  right: max(22px, calc((100vw - 520px) / 2 + 22px));
+  bottom: max(24px, env(safe-area-inset-bottom));
+
+  width: 58px;
+  height: 58px;
+
+  box-shadow: 0 10px 35px #0008;
+}
+
+.fab iconify-icon {
+  font-size: 28px;
+}
+
+/* AUTH */
+
+.auth {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 38px;
+}
+
+.authBox {
+  margin-top: auto;
+  margin-bottom: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+input {
+  width: 100%;
+
+  border: 0;
+  outline: none;
+
+  border-radius: 18px;
+
+  padding: 17px 18px;
+
+  color: #eee;
+  background: #181818;
+
+  font-size: 16px;
+}
+
+input:focus {
+  background: #202020;
+}
+
+.authActions {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 4px;
+}
+
+#authMessage {
+  color: #777;
+
+  min-height: 20px;
+
+  font-size: 13px;
+}
+
+/* TASK SHEET */
+
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+
+  background: #0008;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding: 14px;
+}
+
+.sheet {
+  width: min(100%, 500px);
+
+  background: #171717;
+
+  border-radius: 27px;
+
+  padding: 16px;
+
+  display: flex;
+  gap: 10px;
+
+  box-shadow: 0 20px 80px #000;
+}
+
+.sheet input {
+  flex: 1;
+  background: #222;
+}

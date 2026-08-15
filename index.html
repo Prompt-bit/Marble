@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
+    <meta name="theme-color" content="#0c0c0c" />
+
+    <title>Marble</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Fluent icons through Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  </head>
+
+  <body>
+    <!-- LOGIN -->
+
+    <main id="authView" class="auth hidden">
+      <div class="brand">
+        <img
+          src="marble.png"
+          alt="Marble(link_url[link(ico, tree(icon))])"
+          width="80"
+          height="80"
+          style="align-items: center; justify-content: center"
+        />
+      </div>
+
+      <div class="authBox">
+        <input
+          id="email"
+          type="email"
+          placeholder="Email"
+          autocomplete="email"
+        />
+
+        <input
+          id="password"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+
+        <div class="authActions">
+          <button
+            id="signIn"
+            class="roundButton"
+            aria-label="Sign in"
+            title="Sign in"
+          >
+            <iconify-icon icon="fluent:arrow-right-24-regular"></iconify-icon>
+          </button>
+
+          <button
+            id="signUp"
+            class="roundButton secondary"
+            aria-label="Create account"
+            title="Create account"
+          >
+            <iconify-icon icon="fluent:person-add-24-regular"></iconify-icon>
+          </button>
+        </div>
+
+        <p id="authMessage"></p>
+      </div>
+    </main>
+
+    <!-- MARBLE -->
+
+    <main id="appView" class="app hidden">
+      <header>
+        <div>
+          <div class="brand">marble.</div>
+          <div id="marbleName" class="marbleName"></div>
+        </div>
+
+        <button
+          id="signOut"
+          class="roundButton small secondary"
+          aria-label="Sign out"
+          title="Sign out"
+        >
+          <iconify-icon icon="fluent:sign-out-24-regular"></iconify-icon>
+        </button>
+      </header>
+
+      <section id="tasks" class="tasks"></section>
+
+      <button id="add" class="fab" aria-label="Add" title="Add">
+        <iconify-icon icon="fluent:add-28-regular"></iconify-icon>
+      </button>
+    </main>
+
+    <!-- ADD TASK SHEET -->
+
+    <div id="taskSheet" class="sheetBackdrop hidden">
+      <div class="sheet">
+        <input id="newTask" placeholder="Something to do" autocomplete="off" />
+
+        <button
+          id="saveTask"
+          class="roundButton"
+          aria-label="Save"
+          title="Save"
+        >
+          <iconify-icon icon="fluent:checkmark-24-regular"></iconify-icon>
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
