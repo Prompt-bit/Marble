@@ -151,6 +151,9 @@ iconify-icon {
   background: transparent;
   color: #111;
 }
+.check:hover {
+  cursor: pointer;
+}
 
 .check iconify-icon {
   width: 16px;

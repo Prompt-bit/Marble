@@ -1,0 +1,16 @@
+{
+  "name": "Marble",
+  "short_name": "Marble",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0c0c0c",
+  "theme_color": "#0c0c0c",
+  "icons": [
+    {
+      "src": "512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

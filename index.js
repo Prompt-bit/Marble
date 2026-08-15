@@ -283,6 +283,10 @@ async function createTask() {
   await loadTasks();
 }
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
+
 // -------------------------
 // START MARBLE
 // -------------------------
