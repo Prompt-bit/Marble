@@ -63,6 +63,22 @@ const taskSheet = document.querySelector("#taskSheet");
 
 const newTask = document.querySelector("#newTask");
 
+const dueDate = document.querySelector("#dueDate");
+
+const dueDateButton = document.querySelector("#dueDateButton");
+
+const datePickerPanel = document.querySelector("#datePickerPanel");
+
+const datePickerMonth = document.querySelector("#datePickerMonth");
+
+const datePickerDays = document.querySelector("#datePickerDays");
+
+const previousMonth = document.querySelector("#previousMonth");
+
+const nextMonth = document.querySelector("#nextMonth");
+
+const clearDueDate = document.querySelector("#clearDueDate");
+
 const saveTask = document.querySelector("#saveTask");
 
 // -------------------------
@@ -194,6 +210,31 @@ function renderTask(task) {
 
   text.textContent = task.text;
 
+  if (task.due_date) {
+    const due = document.createElement("div");
+    const now = new Date();
+    const today = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+    ].join("-");
+    const overdue = !task.completed && task.due_date < today;
+    const formattedDate = new Date(
+      `${task.due_date}T00:00:00`,
+    ).toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    due.className = "taskDue" + (overdue ? " overdue" : "");
+    due.innerHTML = overdue
+      ? `<iconify-icon icon="fluent:warning-20-regular"></iconify-icon> Overdue · ${formattedDate}`
+      : `Due ${formattedDate}`;
+
+    text.appendChild(due);
+  }
+
   const remove = document.createElement("button");
 
   remove.className = "delete";
@@ -206,15 +247,23 @@ function renderTask(task) {
     </iconify-icon>
   `;
 
-  check.addEventListener("click", async () => {
-    await supabase
+  check.addEventListener("click", async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const { error } = await supabase
       .from("tasks")
       .update({
         completed: !task.completed,
       })
       .eq("id", task.id);
 
-    loadTasks();
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    await loadTasks();
   });
 
   remove.addEventListener("click", async () => {
@@ -236,6 +285,7 @@ add.addEventListener("click", () => {
   taskSheet.classList.remove("hidden");
 
   newTask.value = "";
+  resetDatePicker();
 
   setTimeout(() => {
     newTask.focus();
@@ -250,6 +300,97 @@ taskSheet.addEventListener("click", (event) => {
 
 saveTask.addEventListener("click", createTask);
 
+let pickerMonth = new Date();
+
+function toIsoDate(date) {
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("-");
+}
+
+function formatDueDate(value) {
+  return new Date(`${value}T00:00:00`).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function renderDatePicker() {
+  const year = pickerMonth.getFullYear();
+  const month = pickerMonth.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = toIsoDate(new Date());
+
+  datePickerMonth.textContent = pickerMonth.toLocaleDateString(undefined, {
+    month: "long",
+    year: "numeric",
+  });
+  datePickerDays.innerHTML = "";
+
+  for (let index = 0; index < firstDay; index += 1) {
+    datePickerDays.appendChild(document.createElement("span"));
+  }
+
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const date = new Date(year, month, day);
+    const value = toIsoDate(date);
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "datePickerDay";
+    button.textContent = day;
+    button.setAttribute("aria-label", formatDueDate(value));
+
+    if (value === dueDate.value) button.classList.add("selected");
+    if (value === today) button.classList.add("today");
+
+    button.addEventListener("click", () => {
+      dueDate.value = value;
+      dueDateButton.textContent = formatDueDate(value);
+      datePickerPanel.classList.add("hidden");
+      renderDatePicker();
+    });
+
+    datePickerDays.appendChild(button);
+  }
+}
+
+function resetDatePicker() {
+  dueDate.value = "";
+  dueDateButton.textContent = "Choose date";
+  datePickerPanel.classList.add("hidden");
+  pickerMonth = new Date();
+  renderDatePicker();
+}
+
+dueDateButton.addEventListener("click", () => {
+  if (dueDate.value) {
+    const selected = new Date(`${dueDate.value}T00:00:00`);
+    pickerMonth = new Date(selected.getFullYear(), selected.getMonth(), 1);
+  }
+
+  renderDatePicker();
+  datePickerPanel.classList.toggle("hidden");
+});
+
+previousMonth.addEventListener("click", () => {
+  pickerMonth.setMonth(pickerMonth.getMonth() - 1);
+  renderDatePicker();
+});
+
+nextMonth.addEventListener("click", () => {
+  pickerMonth.setMonth(pickerMonth.getMonth() + 1);
+  renderDatePicker();
+});
+
+clearDueDate.addEventListener("click", resetDatePicker);
+
+renderDatePicker();
+
 newTask.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     createTask();
@@ -258,6 +399,7 @@ newTask.addEventListener("keydown", (event) => {
 
 async function createTask() {
   const text = newTask.value.trim();
+  const selectedDueDate = dueDate.value || null;
 
   if (!text) return;
 
@@ -271,6 +413,7 @@ async function createTask() {
     user_id: user.id,
     text,
     completed: false,
+    due_date: selectedDueDate,
   });
 
   if (error) {
@@ -282,6 +425,13 @@ async function createTask() {
 
   await loadTasks();
 }
+document.addEventListener("contextmenu", (e) => {
+  event.preventDefault();
+});
+
+document.addEventListener("click", () => {
+  event.preventDefault();
+});
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js");

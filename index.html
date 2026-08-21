@@ -131,6 +131,47 @@
       <div class="sheet">
         <input id="newTask" placeholder="Something to do" autocomplete="off" />
 
+        <input id="dueDate" type="date" aria-label="Due date" class="hidden" />
+
+        <div class="datePicker">
+          <button id="dueDateButton" class="datePickerButton" type="button">
+            Choose date
+          </button>
+
+          <div id="datePickerPanel" class="datePickerPanel hidden">
+            <div class="datePickerHeader">
+              <button
+                id="previousMonth"
+                class="datePickerNav"
+                type="button"
+                aria-label="Previous month"
+              >
+                ‹
+              </button>
+              <strong id="datePickerMonth"></strong>
+              <button
+                id="nextMonth"
+                class="datePickerNav"
+                type="button"
+                aria-label="Next month"
+              >
+                ›
+              </button>
+            </div>
+
+            <div class="datePickerWeekdays" aria-hidden="true">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span
+              ><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+
+            <div id="datePickerDays" class="datePickerDays"></div>
+
+            <button id="clearDueDate" class="clearDueDate" type="button">
+              Clear date
+            </button>
+          </div>
+        </div>
+
         <button
           id="saveTask"
           class="roundButton"
